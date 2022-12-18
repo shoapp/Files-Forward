@@ -65,7 +65,7 @@ async def forward(bot, message):
         for msg in data:
             channel=msg.channel
             file_id=msg.id
-            message_id=msg.message_id
+            message_id=msg.id
             methord = msg.methord
             caption = msg.caption
             file_type = msg.file_type
@@ -82,9 +82,9 @@ async def forward(bot, message):
                         await bot.copy_message(
                             chat_id=chat_id,
                             from_chat_id=channel,
-                            parse_mode="md",
+                            parse_mode=enums.ParseMode.MARKDOWN,
                             caption=caption,
-                            message_id=message_id
+                            message_id=message.id
                             )
                     await asyncio.sleep(1)
                     try:
@@ -107,9 +107,9 @@ async def forward(bot, message):
                         await bot.copy_message(
                             chat_id=chat_id,
                             from_chat_id=channel,
-                            parse_mode="md",
+                            parse_mode=enums.ParseMode.MARKDOWN,
                             caption=caption,
-                            message_id=message_id
+                            message_id=message.id
                             )
                     await asyncio.sleep(1)
 
@@ -211,9 +211,10 @@ async def forward(bot, message):
                                         await bot.USER.copy_message(
                                             chat_id=chat_id,
                                             from_chat_id=channel,
-                                            parse_mode="md",
+                                            parse_mode=enums.ParseMode.MARKDOWN,
                                             caption=caption,
-                                            message_id=message_id
+                                            message_id=message.id,
+                                         #  parse_mode=enums.ParseMode.MARKDOWN
                                             )
                                     except Exception as e:
                                         await bot.send_message(chat_id=OWNER, text=f"LOG-Error: {e}")
