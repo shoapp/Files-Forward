@@ -68,7 +68,7 @@ async def forward(bot, message):
             message_id=msg.id
             methord = msg.methord
             caption = msg.caption
-            file_type = msg.file_type
+            file_type = msg.file_type.value
             chat_id=Config.TO_CHANNEL
             if methord == "bot":
                 try:
@@ -151,7 +151,7 @@ async def forward(bot, message):
                                             fetch = await bot.USER.get_messages(channel, message_id)
                                             print("Fetching file_id")
                                             try:
-                                                for file_type in ("document", "video", "audio", "photo"):
+                                                for file_type in (enums.MessageMediaType.DOCUMENT, enums.MessageMediaType.VIDEO, enums.MessageMediaType.AUDIO, enums.MessageMediaType.PHOTO):
                                                     media = getattr(fetch, file_type, None)
                                                     if media is not None:
                                                         file_idn=media.file_id
@@ -169,7 +169,7 @@ async def forward(bot, message):
                                         try:
                                             fetch = await bot.USER.get_messages(channel, message_id)
                                             print("Fetching file_ref")
-                                            for file_type in ("document", "video", "audio", "photo"):
+                                            for file_type in (enums.MessageMediaType.DOCUMENT, enums.MessageMediaType.VIDEO, enums.MessageMediaType.AUDIO, enums.MessageMediaType.PHOTO):
                                                 media = getattr(fetch, file_type, None)
                                                 if media is not None:
                                                     file_idn=media.file_id
@@ -187,7 +187,7 @@ async def forward(bot, message):
                                     except MediaEmpty:
                                         try:
                                             fetch = await bot.USER.get_messages(channel, message_id)
-                                            for file_type in ("document", "video", "audio", "photo"):
+                                            for file_type in (enums.MessageMediaType.DOCUMENT, enums.MessageMediaType.VIDEO, enums.MessageMediaType.AUDIO, enums.MessageMediaType.PHOTO):
                                                 media = getattr(fetch, file_type, None)
                                                 if media is not None:
                                                     file_idn=media.file_id
