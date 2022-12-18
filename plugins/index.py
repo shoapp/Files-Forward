@@ -46,7 +46,7 @@ async def run(bot, message):
 
     if 'joinchat' in channel:
         global channel_type
-        channel_type="private"
+        channel_type=enums.ChatType.PRIVATE:
         try:
             await bot.USER.join_chat(channel)
         except UserAlreadyParticipant:
@@ -73,7 +73,7 @@ async def run(bot, message):
             
     else:
         #global channel_type
-        channel_type="public"
+        channel_type=enums.ChatType.CHANNEL 
         channel_id = re.search(r"t.me.(.*)", channel)
         #global channel_id_
         channel_id_=channel_id.group(1)
@@ -132,15 +132,15 @@ async def run(bot, message):
 async def cb_handler(bot: Client, query: CallbackQuery):
     filter=""
     if query.data == "docs":
-        filter="document"
+        filter=enums.MessageMediaType.DOCUMENT
     elif query.data == "all":
-        filter="empty"
+        filter=enums.MessagesFilter.EMPTY
     elif query.data == "photos":
-        filter="photo"
+        filter=enums.MessageMediaType.PHOTO
     elif query.data == "videos":
-        filter="video"
+        filter=enums.MessageMediaType.VIDEO
     elif query.data == "audio":
-        filter="audio"
+        filter=enums.MessageMediaType.AUDIO
     caption=None
 
 
@@ -167,40 +167,40 @@ async def cb_handler(bot: Client, query: CallbackQuery):
     FROM=channel_id_
     try:
         async for MSG in bot.USER.search_messages(chat_id=FROM,offset=skip_no,limit=limit_no,filter=filter):
-            if channel_type == "public":
+            if channel_type == enums.ChatType.CHANNEL:
                 methord="bot"
                 channel=FROM
-                msg=await bot.get_messages(FROM, MSG.message_id)
-            elif channel_type == "private":
+                msg=await bot.get_messages(FROM, MSG.id)
+            elif channel_type == enums.ChatType.PRIVATE:
                 methord="user"
                 channel=str(FROM)
-                msg=await bot.USER.get_messages(FROM, MSG.message_id)
+                msg=await bot.USER.get_messages(FROM, MSG.id)
             msg_caption=""
             if caption is not None:
                 msg_caption=caption
             elif msg.caption:
                 msg_caption=msg.caption
-            if filter in ("document", "video", "audio", "photo"):
-                for file_type in ("document", "video", "audio", "photo"):
+            if filter in (enums.MessageMediaType.DOCUMENT, enums.MessageMediaType.VIDEO, enums.MessageMediaType.AUDIO, enums.MessageMediaType.PHOTO):
+                for file_type in (enums.MessageMediaType.DOCUMENT, enums.MessageMediaType.VIDEO, enums.MessageMediaType.AUDIO, enums.MessageMediaType.PHOTO):
                     media = getattr(msg, file_type, None)
                     if media is not None:
                         file_type = file_type
                         id=media.file_id
                         break
-            if filter == "empty":
-                for file_type in ("document", "video", "audio", "photo"):
+            if filter == enums.MessagesFilter.EMPTY:
+                for file_type in (enums.MessageMediaType.DOCUMENT, enums.MessageMediaType.VIDEO, enums.MessageMediaType.AUDIO, enums.MessageMediaType.PHOTO):                                  
                     media = getattr(msg, file_type, None)
                     if media is not None:
                         file_type = file_type
                         id=media.file_id
                         break
                 else:
-                    id=f"{FROM}_{msg.message_id}"
+                    id=f"{FROM}_{msg.id}"
                     file_type="others"
             
-            message_id=msg.message_id
+            message_id=msg.id
             try:
-                await save_data(id, channel, message_id, methord, msg_caption, file_type)
+                await save_data(id, channel, message.id, methord, msg_caption, file_type)
             except Exception as e:
                 print(e)
                 await bot.send_message(OWNER, f"LOG-Error-{e}")
