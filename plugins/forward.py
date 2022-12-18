@@ -64,7 +64,7 @@ async def forward(bot, message):
         data = await get_search_results()
         for msg in data:
             channel=msg.channel
-            file_id=msg.id
+            document_file_id=msg.id
             message_id=msg.id
             methord = msg.methord
             caption = msg.caption
@@ -75,7 +75,7 @@ async def forward(bot, message):
                     if file_type in ("document", "video", "audio", "photo"):
                         await bot.send_cached_media(
                             chat_id=chat_id,
-                            file_id=file_id,
+                            document_file_id=file_id,
                             caption=caption
                             )
                     else:
@@ -100,7 +100,7 @@ async def forward(bot, message):
                     if file_type in ("document", "video", "audio", "photo"):
                         await bot.send_cached_media(
                             chat_id=chat_id,
-                            file_id=file_id,
+                            document_file_id=file_id,
                             caption=caption
                             )
                     else:
@@ -143,7 +143,7 @@ async def forward(bot, message):
                                     try:
                                         await bot.USER.send_cached_media(
                                             chat_id=chat_id,
-                                            file_id=file_id,
+                                            document_file_id=file_id,
                                             caption=caption
                                             )
                                     except FileReferenceExpired:
@@ -156,7 +156,7 @@ async def forward(bot, message):
                                                     if media is not None:
                                                         file_idn=media.file_id
                                                         break
-                                                await bot.USER.send_cached_media(chat_id=chat_id, file_id=file_idn, caption=caption)
+                                                await bot.USER.send_cached_media(chat_id=chat_id, document_file_id=file_idn, caption=caption)
                                             except Exception as e:
                                                 print(e)
                                                 await bot.send_message(OWNER, f"LOG-Error-{e}")
@@ -175,7 +175,7 @@ async def forward(bot, message):
                                                     file_idn=media.file_id
                                                     break
                                             try:
-                                                await bot.USER.send_cached_media(chat_id=chat_id, file_id=file_idn, caption=caption)
+                                                await bot.USER.send_cached_media(chat_id=chat_id, document_file_id=file_idn, caption=caption)
                                             except Exception as e:
                                                 print(e)
                                                 await bot.send_message(chat_id=OWNER, text=f"LOG-Error: {e}")
@@ -193,7 +193,7 @@ async def forward(bot, message):
                                                     file_idn=media.file_id
                                                     break
                                             try:
-                                                await bot.USER.send_cached_media(chat_id=chat_id, file_id=file_idn, caption=caption)
+                                                await bot.USER.send_cached_media(chat_id=chat_id, document_file_id=file_idn, caption=caption)
                                             except Exception as e:
                                                 print(e)
                                                 await bot.send_message(chat_id=OWNER, text=f"LOG-Error: {e}")
